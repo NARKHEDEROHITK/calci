@@ -1,8 +1,10 @@
 import { useState, useMemo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { FaChartLine, FaWallet, FaArrowTrendUp, FaCoins } from 'react-icons/fa6';
-import Header from '../../common/Header';
-import { formatCurrency, getSliderStyle } from '../../../utils/formatters';
+import Header from '../../../common/Header';
+import { formatCurrency, getSliderStyle } from '../../../../utils/formatters';
+import { calculateSIP } from '../../../../utils/financeFormulas';
+import GrowthLineChart from '../../../common/charts/GrowthLineChart';
 
 const SIPCalculator = () => {
     const [monthlyInvestment, setMonthlyInvestment] = useState(5000);
@@ -10,26 +12,17 @@ const SIPCalculator = () => {
     const [years, setYears] = useState(10);
 
     const calculations = useMemo(() => {
-        const i = returnRate / 100 / 12; // Monthly rate
-        const n = years * 12; // Total months
-
-        // FV = P × [((1 + i)^n - 1) / i] × (1 + i)
-        const totalInvested = monthlyInvestment * n;
-        const totalValue = monthlyInvestment * ((Math.pow(1 + i, n) - 1) / i) * (1 + i);
-        const wealthGained = totalValue - totalInvested;
-
-        return {
-            totalInvested,
-            totalValue: Math.round(totalValue),
-            wealthGained: Math.round(wealthGained),
-            investedPercentage: (totalInvested / totalValue) * 100,
-            gainPercentage: (wealthGained / totalValue) * 100
-        };
+        return calculateSIP(monthlyInvestment, returnRate, years);
     }, [monthlyInvestment, returnRate, years]);
 
-    const chartData = [
-        { name: 'Invested Amount', value: calculations.totalInvested },
-        { name: 'Wealth Gained', value: calculations.wealthGained }
+    const pieData = [
+        { name: 'Invested Amount', value: calculations.investedAmount },
+        { name: 'Wealth Gained', value: calculations.estReturns }
+    ];
+
+    const growthLines = [
+        { dataKey: 'invested', name: 'Invested Amount', color: '#8884d8' },
+        { dataKey: 'value', name: 'Total Value', color: '#10b981' }
     ];
 
     return (
@@ -140,7 +133,7 @@ const SIPCalculator = () => {
                     <div className="gradient-primary rounded-2xl p-5 text-center mb-6">
                         <div className="text-sm text-white/80 uppercase tracking-wide mb-1">Estimated Future Value</div>
                         <div className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-                            {formatCurrency(calculations.totalValue)}
+                            {formatCurrency(calculations.totalAmount)}
                         </div>
                     </div>
 
@@ -158,7 +151,7 @@ const SIPCalculator = () => {
                                     </linearGradient>
                                 </defs>
                                 <Pie
-                                    data={chartData}
+                                    data={pieData}
                                     cx="50%"
                                     cy="50%"
                                     innerRadius={70}
@@ -185,15 +178,26 @@ const SIPCalculator = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-4 mb-8">
                         <div className="bg-white/[0.03] border border-white/10 rounded-xl p-4">
                             <div className="text-xs text-white/50 uppercase tracking-wider mb-1">Invested Amount</div>
-                            <div className="text-lg font-bold text-white">{formatCurrency(calculations.totalInvested)}</div>
+                            <div className="text-lg font-bold text-white">{formatCurrency(calculations.investedAmount)}</div>
                         </div>
                         <div className="bg-white/[0.03] border border-white/10 rounded-xl p-4">
                             <div className="text-xs text-white/50 uppercase tracking-wider mb-1">Est. Returns</div>
-                            <div className="text-lg font-bold text-emerald-400">{formatCurrency(calculations.wealthGained)}</div>
+                            <div className="text-lg font-bold text-emerald-400">{formatCurrency(calculations.estReturns)}</div>
                         </div>
+                    </div>
+
+                    {/* Growth Chart */}
+                    <div className="mt-8 border-t border-white/10 pt-8">
+                        <h3 className="text-lg font-semibold text-white/90 mb-4">Growth Projection</h3>
+                        <GrowthLineChart
+                            data={calculations.chartData}
+                            lines={growthLines}
+                            xAxisKey="year"
+                            height={250}
+                        />
                     </div>
                 </div>
             </div>

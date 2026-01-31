@@ -9,13 +9,11 @@ import {
     FaListAlt
 } from 'react-icons/fa';
 import {
-    HiCash
-} from 'react-icons/hi';
-import {
     BsGraphUp
 } from 'react-icons/bs';
-import Header from '../../common/Header';
-import { formatCurrency, formatTime, getSliderStyle } from '../../../utils/formatters';
+import { HiCash } from 'react-icons/hi';
+import Header from '../../../common/Header';
+import { formatCurrency, formatTime, getSliderStyle } from '../../../../utils/formatters';
 
 const EMICalculator = () => {
     const [principal, setPrincipal] = useState(5000000); // Default: 50 Lakh
@@ -240,7 +238,7 @@ const EMICalculator = () => {
             {/* Header */}
             <Header
                 icon={FaChartPie}
-                title="EMI Calculator"
+                title="Home Loan Calculator"
                 subtitle="Plan your loan with precision"
             />
 

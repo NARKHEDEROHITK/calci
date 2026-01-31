@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { FaPercent, FaCalculator, FaTags, FaReceipt } from 'react-icons/fa6';
-import Header from '../../common/Header';
-import { formatCurrency, getSliderStyle } from '../../../utils/formatters';
+import Header from '../../../common/Header';
+import { formatCurrency, getSliderStyle } from '../../../../utils/formatters';
 
 const GSTCalculator = () => {
     const [amount, setAmount] = useState(10000);
