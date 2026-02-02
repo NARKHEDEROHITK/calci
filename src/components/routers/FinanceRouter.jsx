@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import EMICalculator from '../calculators/finance/emi/EMICalculator';
 import PersonalLoanCalculator from '../calculators/finance/personal-loan/PersonalLoanCalculator';
 import SIPCalculator from '../calculators/finance/sip/SIPCalculator';
@@ -11,40 +11,29 @@ import CompoundInterestCalculator from '../calculators/finance/compound-interest
 import FinanceDashboard from '../FinanceDashboard';
 
 const FinanceRouter = () => {
-    const { id } = useParams();
-    const cleanId = id?.toLowerCase() || '';
+    return (
+        <Routes>
+            <Route index element={<FinanceDashboard />} />
+            <Route path="home-loan" element={<EMICalculator />} />
+            <Route path="personal-loan" element={<PersonalLoanCalculator />} />
+            <Route path="sip" element={<SIPCalculator />} />
 
-    // Order matters for overlapping prefixes (though here most are distinct enough)
-    // Checking longest prefixes first or unique ones is safer.
+            {/* Handling multiple paths for FD/RD if necessary, but sticking to navConfig path */}
+            <Route path="fd-rd" element={<FDRDCalculator />} />
+            <Route path="fd" element={<FDRDCalculator />} />
+            <Route path="rd" element={<FDRDCalculator />} />
 
-    if (cleanId.startsWith('home-loan')) return <EMICalculator />;
+            <Route path="gst" element={<GSTCalculator />} />
+            <Route path="cagr" element={<CAGRCalculator />} />
+            <Route path="salary-hike" element={<SalaryHikeCalculator />} />
+            <Route path="salary" element={<SalaryHikeCalculator />} />
 
-    // "personal" vs "personal-loan" - straightforward
-    if (cleanId.startsWith('personal-loan')) return <PersonalLoanCalculator />;
+            <Route path="simple-interest" element={<SimpleInterestCalculator />} />
+            <Route path="compound-interest" element={<CompoundInterestCalculator />} />
 
-    // "sip"
-    if (cleanId.startsWith('sip')) return <SIPCalculator />;
-
-    // "fd" or "rd" or "fd-rd"
-    if (cleanId.startsWith('fd') || cleanId.startsWith('rd')) return <FDRDCalculator />;
-
-    // "gst"
-    if (cleanId.startsWith('gst')) return <GSTCalculator />;
-
-    // "cagr"
-    if (cleanId.startsWith('cagr')) return <CAGRCalculator />;
-
-    // "salary-hike" or just "salary"
-    if (cleanId.startsWith('salary')) return <SalaryHikeCalculator />;
-
-    // "simple-interest" - check "simple"
-    if (cleanId.startsWith('simple')) return <SimpleInterestCalculator />;
-
-    // "compound-interest" - check "compound"
-    if (cleanId.startsWith('compound')) return <CompoundInterestCalculator />;
-
-    // If no match found, show dashboard
-    return <FinanceDashboard />;
+            <Route path="*" element={<FinanceDashboard />} />
+        </Routes>
+    );
 };
 
 export default FinanceRouter;

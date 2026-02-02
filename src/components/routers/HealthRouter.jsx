@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import BMICalculator from '../calculators/health/bmi/BMICalculator';
 import BMRCalculator from '../calculators/health/bmr/BMRCalculator';
 import IdealWeightCalculator from '../calculators/health/ideal-weight/IdealWeightCalculator';
@@ -8,24 +8,18 @@ import WaterIntakeCalculator from '../calculators/health/water-intake/WaterIntak
 import HealthDashboard from '../HealthDashboard';
 
 const HealthRouter = () => {
-    const { id } = useParams();
-    const cleanId = id?.toLowerCase() || '';
-
-    if (cleanId.startsWith('bmi')) return <BMICalculator />;
-    if (cleanId.startsWith('bmr')) return <BMRCalculator />;
-
-    // "ideal-weight" or "ideal"
-    if (cleanId.startsWith('ideal')) return <IdealWeightCalculator />;
-
-    if (cleanId.startsWith('age')) return <AgeCalculator />;
-
-    // "body-fat" or "body"
-    if (cleanId.startsWith('body')) return <BodyFatCalculator />;
-
-    // "water-intake" or "water"
-    if (cleanId.startsWith('water')) return <WaterIntakeCalculator />;
-
-    return <HealthDashboard />;
+    return (
+        <Routes>
+            <Route index element={<HealthDashboard />} />
+            <Route path="bmi" element={<BMICalculator />} />
+            <Route path="bmr" element={<BMRCalculator />} />
+            <Route path="ideal-weight" element={<IdealWeightCalculator />} />
+            <Route path="age" element={<AgeCalculator />} />
+            <Route path="body-fat" element={<BodyFatCalculator />} />
+            <Route path="water-intake" element={<WaterIntakeCalculator />} />
+            <Route path="*" element={<HealthDashboard />} />
+        </Routes>
+    );
 };
 
 export default HealthRouter;

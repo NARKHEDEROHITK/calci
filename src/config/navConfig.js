@@ -13,15 +13,77 @@ import {
     FaUserCircle,
     FaTint,
     FaCalculator,
-    FaHeartbeat
+    FaHeartbeat,
+    FaFileInvoiceDollar,
+    FaUserTie,
+    FaBuilding,
+    FaPiggyBank,
+    FaHandHoldingHeart,
+    FaCut,
+    FaChartArea,
+    FaTree,
+    FaUmbrellaBeach,
+    FaMoneyCheckAlt,
+    FaBlind,
+    FaTags,
+    FaGasPump,
+    FaLightbulb,
+    FaUtensils,
+    FaExchangeAlt,
+    FaTools
 } from 'react-icons/fa';
 
 export const CATEGORIES = {
     FINANCE: 'finance',
-    HEALTH: 'health'
+    HEALTH: 'health',
+    TAX: 'tax',
+    WEALTH: 'wealth',
+    UTILITY: 'utility'
 };
 
 export const NAV_CONFIG = [
+    {
+        id: CATEGORIES.UTILITY,
+        label: 'Utility Tools',
+        path: '/utility',
+        icon: FaTools,
+        items: [
+            { label: 'Discount Calculator', path: '/utility/discount', icon: FaTags },
+            { label: 'Percentage Calculator', path: '/utility/percentage', icon: FaPercentage },
+            { label: 'Fuel Cost', path: '/utility/fuel', icon: FaGasPump },
+            { label: 'Electricity Bill', path: '/utility/electricity', icon: FaLightbulb },
+            { label: 'Tip Calculator', path: '/utility/tip', icon: FaUtensils },
+            { label: 'Unit Converter', path: '/utility/converter', icon: FaExchangeAlt },
+        ]
+    },
+    {
+        id: CATEGORIES.WEALTH,
+        label: 'Investment & Wealth',
+        path: '/wealth',
+        icon: FaChartLine,
+        items: [
+            { label: 'Lumpsum Calculator', path: '/wealth/lumpsum', icon: FaMoneyCheckAlt },
+            { label: 'PPF Calculator', path: '/wealth/ppf', icon: FaTree },
+            { label: 'NPS Calculator', path: '/wealth/nps', icon: FaBlind },
+            { label: 'SWP Calculator', path: '/wealth/swp', icon: FaHandHoldingUsd },
+            { label: 'Retirement Planning', path: '/wealth/retirement', icon: FaUmbrellaBeach },
+            { label: 'Inflation Calculator', path: '/wealth/inflation', icon: FaChartLine },
+        ]
+    },
+    {
+        id: CATEGORIES.TAX,
+        label: 'Tax & Income',
+        path: '/tax',
+        icon: FaFileInvoiceDollar,
+        items: [
+            { label: 'Income Tax', path: '/tax/income-tax', icon: FaUserTie },
+            { label: 'HRA Calculator', path: '/tax/hra', icon: FaBuilding },
+            { label: 'PF Calculator', path: '/tax/pf', icon: FaPiggyBank },
+            { label: 'Gratuity', path: '/tax/gratuity', icon: FaHandHoldingHeart },
+            { label: 'TDS Calculator', path: '/tax/tds', icon: FaCut },
+            { label: 'Capital Gains', path: '/tax/capital-gains', icon: FaChartArea },
+        ]
+    },
     {
         id: CATEGORIES.FINANCE,
         label: 'Finance',
@@ -58,6 +120,6 @@ export const NAV_CONFIG = [
 export const getCategoryByPath = (pathname) => {
     if (pathname === '/') return NAV_CONFIG.find(cat => cat.id === CATEGORIES.FINANCE); // Default to Finance for root
 
-    // Check if path starts with category path (e.g. /finance or /health)
+    // Check if path starts with category path
     return NAV_CONFIG.find(cat => pathname.startsWith(cat.path));
 };

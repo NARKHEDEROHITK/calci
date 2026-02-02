@@ -77,9 +77,16 @@ const calculators = [
     }
 ];
 
+import SEO from './common/SEO';
+
 const FinanceDashboard = () => {
     return (
         <div className="flex flex-col items-center p-4 md:p-8">
+            <SEO
+                title="Finance Calculators"
+                description="Use our free financial calculators for Home Loans, Personal Loans, SIP, FD, RD, and more. Plan your finances effectively with CalcHub."
+                keywords="Finance Calculator, EMI Calculator, SIP Calculator, FD Calculator, Wealth Management"
+            />
             <Header
                 title="Finance Calculators"
                 subtitle="All the tools you need for financial planning"
